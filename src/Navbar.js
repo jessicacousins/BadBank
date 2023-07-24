@@ -8,7 +8,7 @@ import Tooltip from "./Layouts/Tooltip";
 const NavBar = () => {
   return (
     <header>
-      <nav className="navbar navbar-expand">
+      <nav className="navbar">
         <img src={foxlogo} alt="BadBank Fox Logo" className="foxlogo" />
         <h1>FoxBank</h1>
         <Tooltip text="Home">
