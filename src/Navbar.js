@@ -1,60 +1,46 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+// import Breadcrumbs from "./Breadcrumbs";
+import "bootstrap/dist/css/bootstrap.min.css";
+import foxlogo from "./foxlogo.png";
+import Tooltip from "./Layouts/Tooltip";
 
-const Navbar = () => {
+const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          BadBank
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <a className="nav-link" href="#/CreateAccount/">
-                Create Account
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/Login/">
-                Login
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/Deposit/">
-                Deposit
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/Withdraw/">
-                Withdraw
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/Balance">
-                Balance
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/AllData">
-                All Data
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <header>
+      <nav className="navbar navbar-expand">
+        <img src={foxlogo} alt="BadBank Fox Logo" className="foxlogo" />
+        <h1>FoxBank</h1>
+        <Tooltip text="Home">
+          <NavLink to="/" exact>
+            Home
+          </NavLink>
+        </Tooltip>
+        <Tooltip text="Create Account">
+          <NavLink to="/CreateAccount">Create Account</NavLink>
+        </Tooltip>
+        {/* <Tooltip text="Login">
+          <NavLink to="/Login">Login</NavLink>
+        </Tooltip> */}
+        <Tooltip text="Deposit">
+          <NavLink to="/Deposit">Deposit</NavLink>
+        </Tooltip>
+        <Tooltip text="Withdraw">
+          <NavLink to="/Withdraw">Withdraw</NavLink>
+        </Tooltip>
+        {/* <Tooltip text="Balance">
+          <NavLink to="/Balance">Balance</NavLink>
+        </Tooltip> */}
+        <Tooltip text="All Data">
+          <NavLink to="/AllData">All Data</NavLink>
+        </Tooltip>
+        <Tooltip text="Help">
+          <NavLink to="/Help">Help</NavLink>
+        </Tooltip>
+      </nav>
+      {/* <Breadcrumbs /> */}
+    </header>
   );
 };
 
-export default Navbar;
+export default NavBar;

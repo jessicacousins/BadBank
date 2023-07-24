@@ -1,118 +1,332 @@
-// ? ===========================================================
-// ! code given in video Bad Bank Challenge:
-// function CreateAccount() {
-//   const ctx = React.useContext(UserContext);
-//   function handle(data) {
-//     ctx.users.push({
-//       name: data.name,
-//       email: data.email,
-//       password: data.password,
-//       balance: 100,
-//     });
-//     return true;
-//   }
-//   return (
-//     <BankForm
-//       bgcolor="primary"
-//       label="Create Account"
-//       handle={handle}
-//       hideAmount={true}
-//       successButton="Add another account"
-//     />
-//   );
-// }
-
-// ? ===========================================================
-
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "./Context.js";
 import Card from "./Card.js";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Link } from "react-router-dom";
+import bing from "./bing.wav";
+import { useRef } from "react";
+import bankImg from "./bluegreenbank.png";
+import questionsImg from "./questions.png";
+import Tooltip from "./Layouts/Tooltip.js";
+import checkmark from "./checkmark.png";
 
 const CreateAccount = () => {
-  const [show, setShow] = React.useState(true);
-  const [status, setStatus] = React.useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { users, createUser } = useContext(UserContext);
+  const { createUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const numberInputRef = useRef(null);
 
-  function handleCreate() {
+  const customStyle = {
+    color: "rgb(72, 31, 42)",
+    backgroundColor: "rgb(245, 239, 227)",
+  };
+
+  const formFieldStyle = {
+    marginTop: "7px",
+    marginRight: "280px",
+    fontSize: "1.2em",
+  };
+
+  const createAccountBtn = {
+    background: " rgb(214, 235, 243)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    color: "rgb(1, 1, 77)",
+    fontWeight: "bold",
+    fontSize: "1.1em",
+  };
+
+  const inputFieldStyle = {
+    width: "365px",
+    height: "45px",
+    fontSize: "1.2em",
+    textAlign: "center",
+  };
+
+  const againBtn = {
+    background: " rgb(214, 235, 243)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    color: "rgb(1, 1, 77)",
+    fontWeight: "bold",
+    fontSize: "1.1em",
+  };
+
+  const redBtn = {
+    backgroundColor: " rgb(239, 187, 178)",
+    color: "rgb(0, 0, 0)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    fontWeight: "bold",
+    marginTop: "1em",
+    marginLeft: "5em",
+    fontSize: "1.1em",
+  };
+
+  const greenBtn = {
+    backgroundColor: "rgb(166, 237, 208)",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    color: "rgb(1, 1, 77)",
+    fontWeight: "bold",
+    marginTop: "1em",
+    fontSize: "1.1em",
+  };
+
+  const checkmarkStyle = {
+    width: "6em",
+    borderRadius: "20px",
+  };
+
+  const [accountCreated, setAccountCreated] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  function handleCreate(values, formikProps) {
+    if (!values.name || values.name.trim() === "") {
+      alert("Name is required.");
+      return;
+    }
+
+    if (!values.email || values.email.trim() === "") {
+      alert("Email is required.");
+      return;
+    }
+
+    if (!values.password || values.password.trim() === "") {
+      alert("Password is required.");
+      return;
+    }
+
+    if (values.password.length > 15) {
+      alert("Password cannot exceed 15 characters.");
+      return;
+    }
+
+    if (values.password.length < 8) {
+      alert("Password must be between 8 and 15 characters.");
+      return;
+    }
+
     const newUser = {
-      name,
-      email,
-      password,
+      name: values.name,
+      email: values.email,
+      password: values.password,
       balance: 0,
     };
+
     createUser(newUser);
-    navigate("/Balance");
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+    });
+    setAccountCreated(true);
   }
 
-  function clearForm() {
-    setName("");
-    setEmail("");
-    setPassword("");
-    setShow(true);
-  }
+  const isValid =
+    formData.name.trim() !== "" ||
+    formData.email.trim() !== "" ||
+    formData.password.trim() !== "";
+
+  const handleButtonClick = (formikProps) => {
+    const isFormFilled =
+      formikProps.values.name.trim() !== "" &&
+      formikProps.values.email.trim() !== "" &&
+      formikProps.values.password.trim() !== "";
+
+    if (formikProps.isValid && isFormFilled) {
+      const audio = new Audio(bing);
+      audio.play();
+    }
+
+    if (numberInputRef.current) {
+      numberInputRef.current.value = "";
+    }
+  };
 
   return (
     <Card
-      bgcolor="warning"
+      customStyle={customStyle}
+      className="create-account"
       header="Create Account"
-      status={status}
       body={
-        show ? (
-          <>
-            <h1>Welcome</h1>
-            <h6>Please Create New Account</h6>
-            <br />
-            Name
-            <br />
-            <input
-              type="input"
-              className="form-control"
-              id="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.currentTarget.value)}
+        accountCreated ? (
+          <div>
+            <h5 className="success-title">Success</h5>
+            <img
+              style={checkmarkStyle}
+              className="checkmark"
+              src={checkmark}
+              alt="success checkmark"
             />
-            <br />
-            Email <br />
-            <input
-              type="input"
-              className="form-control"
-              id="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
-            />
-            <br />
-            Password <br />
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
-            <br />
+            <hr />
             <button
-              type="submit"
-              className="btn btn-light"
-              onClick={handleCreate}
+              style={againBtn}
+              className="btn"
+              onClick={() => setAccountCreated(false)}
             >
-              Create Account
+              Create Another Account
             </button>
-          </>
+
+            <br />
+            <Link to="/Deposit" className="btn" style={greenBtn}>
+              Deposit
+            </Link>
+            <Link to="/Withdraw" className="btn" style={redBtn}>
+              Withdraw
+            </Link>
+          </div>
         ) : (
-          <>
-            <h5>Success</h5>
-            <button type="submit" className="btn btn-light" onClick={clearForm}>
-              Add another account
-            </button>
-          </>
+          <Formik initialValues={formData} onSubmit={handleCreate}>
+            {(formikProps) => (
+              <Form>
+                <h1
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "3em",
+                    color: "rgb(1, 1, 77)",
+                  }}
+                >
+                  Welcome
+                </h1>
+                <h6 style={{ fontWeight: "bold" }}>
+                  Please Create New Account
+                </h6>
+                <label style={formFieldStyle} htmlFor="name">
+                  Name <span style={{ color: "red" }}>*</span>
+                </label>
+                <Field
+                  style={inputFieldStyle}
+                  type="input"
+                  className={`form-control ${
+                    formikProps.touched.name && formikProps.errors.name
+                      ? "error-border"
+                      : ""
+                  }`}
+                  id="name"
+                  name="name"
+                  placeholder="Enter name"
+                  required
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  style={{ color: "maroon", fontWeight: "bold" }}
+                />
+
+                <br />
+                <label style={formFieldStyle} htmlFor="email">
+                  Email <span style={{ color: "red" }}>*</span>
+                </label>
+                <Field
+                  style={inputFieldStyle}
+                  type="input"
+                  className={`form-control ${
+                    formikProps.touched.email && formikProps.errors.email
+                      ? "error-border"
+                      : ""
+                  }`}
+                  id="email"
+                  name="email"
+                  placeholder="Enter email"
+                  required
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  style={{ color: "maroon", fontWeight: "bold" }}
+                />
+
+                <br />
+                <label style={formFieldStyle} htmlFor="password">
+                  Password<span style={{ color: "red" }}>*</span>
+                </label>
+                <Field
+                  style={inputFieldStyle}
+                  type="password"
+                  className={`form-control ${
+                    formikProps.touched.password && formikProps.errors.password
+                      ? "error-border"
+                      : ""
+                  }`}
+                  id="password"
+                  name="password"
+                  placeholder="Enter password"
+                  required
+                />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  style={{ color: "maroon", fontWeight: "bold" }}
+                />
+
+                <br />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Tooltip text="Home">
+                    <Link
+                      to="/"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        marginRight: "65px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <img
+                        src={bankImg}
+                        alt="home icon"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                    </Link>
+                  </Tooltip>
+                  <button
+                    disabled={!formikProps.isValid || !formikProps.dirty}
+                    title="submit"
+                    type="submit"
+                    className="btn"
+                    onClick={() => handleButtonClick(formikProps)}
+                    style={createAccountBtn}
+                  >
+                    Start Banking
+                  </button>
+
+                  <Tooltip text="Questions/Help">
+                    <Link
+                      to="/Help"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        marginLeft: "65px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <img
+                        src={questionsImg}
+                        alt="question icon"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                    </Link>
+                  </Tooltip>
+                </div>
+              </Form>
+            )}
+          </Formik>
         )
       }
     />

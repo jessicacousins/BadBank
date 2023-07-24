@@ -4,7 +4,7 @@ import Card from "./Card.js";
 
 const Balance = () => {
   const { users } = useContext(UserContext);
-  const currentUser = users[0];
+  const currentUser = users[users.length - 1];
   const [balanceChange, setBalanceChange] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
@@ -18,16 +18,20 @@ const Balance = () => {
   if (!currentUser) {
     return (
       <Card
-        bgcolor="secondary"
+        bgcolor="light"
         header="Balance"
         body={<>No user data available</>}
       />
     );
   }
+  const customStyle = {
+    color: "rgb(72, 31, 42)",
+    backgroundColor: "rgb(245, 239, 227)",
+  };
 
   return (
     <Card
-      bgcolor="primary"
+      customStyle={customStyle}
       header="Balance"
       body={
         <>

@@ -39,9 +39,14 @@ const Login = () => {
     setShow(false);
   };
 
+  const customStyle = {
+    color: "rgb(72, 31, 42)",
+    backgroundColor: "rgb(245, 239, 227)",
+  };
+
   return (
     <Card
-      bgcolor="info"
+      customStyle={customStyle}
       header="Login"
       status={status}
       body={

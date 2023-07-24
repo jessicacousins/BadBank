@@ -1,8 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  letter-spacing: 1px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(135deg, #b2e1fc, #b2fcb2);
+  background-size: 150% 200%;
+  min-height: 100vh;
 }
 
 .card {
@@ -10,6 +21,9 @@
   margin-top: 20px;
   height: 100%;
   width: 100%;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 1.3px;
+  font-weight: bold;
 }
 
 .allCards {
@@ -20,13 +34,192 @@
   width: 100%;
 }
 
+/* img displayed on Homepage  */
 .bankImg {
   border-radius: 35px;
-  border: 0.5px solid #000;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  border: 0.5px solid rgb(178, 239, 215);
+  box-shadow: 0 0 5px 2px rgba(178, 239, 215, 0.5);
 }
 
+/* AllData area  */
 .allDataDisplay {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.custom-large-card {
   text-align: center;
   margin-top: 20px;
+  background-color: rgb(245, 239, 227);
+  color: rgb(72, 31, 42);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: auto;
+  max-width: 50em !important;
+}
+
+.category {
+  font-size: 2em;
+}
+
+.p-user-info {
+  color: rgb(68, 68, 167);
+  margin-top: 10px;
+}
+
+/* NavBar area  */
+nav {
+  background: rgb(245, 239, 227);
+  border-radius: 0px 0px 10px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: rgb(72, 31, 42);
+  font-family: "Playfair Display", serif;
+  font-weight: bold;
+  font-size: 1.1em;
+  letter-spacing: 1.1px;
+}
+
+header nav {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header nav a:hover {
+  background: rgb(247, 200, 149);
+  color: rgb(127, 69, 57);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* FoxBank nav title  */
+header nav h1 {
+  margin-right: auto;
+  font-size: 2.5em;
+  font-family: "Lobster", cursive;
+}
+
+.foxlogo {
+  width: 10em;
+}
+
+header nav a {
+  text-decoration: none;
+  padding: 10px;
+  margin-right: 15px;
+  border-radius: 2px;
+  color: rgb(127, 69, 57);
+}
+
+header nav a.active {
+  background: rgb(214, 235, 243);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: rgb(1, 1, 77);
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+/* Tooltip customized area */
+.custom-tooltip {
+  position: relative;
+}
+
+.tooltip-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.custom-tooltip:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* breadcrumbs area */
+.breadcrumbs {
+  max-width: 1200px;
+  margin: 20px auto;
+}
+.breadcrumbs > * {
+  display: inline-block;
+  margin-right: 10px;
+}
+.breadcrumbs .crumb:after {
+  content: ">";
+  margin-left: 10px;
+  color: #e3fbf9;
+}
+.breadcrumbs .crumb:last-child:after {
+  display: none;
+}
+.breadcrumbs .crumb a {
+  color: #e3fbf9;
+}
+
+/* NotFound area  */
+.notFoundBtn {
+  background-color: rgb(127, 69, 57) !important;
+  color: rgb(245, 239, 227) !important;
+  margin: 5px;
+}
+
+.notFoundBtn:hover {
+  background-color: rgb(227, 162, 91) !important;
+  color: rgb(245, 239, 227) !important;
+  margin: 5px;
+}
+
+/* success-titles */
+.success-title {
+  font-weight: bold;
+  font-size: 3em;
+  color: rgb(1, 1, 77);
+}
+
+/* Deposit area  */
+.account-holder {
+  /* font-size: 2em; */
+  margin-right: 170px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.account-holder-user {
+  font-size: 2em;
+  color: rgb(1, 1, 77);
+}
+
+.account-holder-balance {
+  margin-top: 20px;
+  margin-right: 170px;
+  font-weight: bold;
+}
+
+.account-holder-balance-number {
+  font-size: 2.5em;
+  color: rgb(1, 1, 77);
+}
+
+/* Help area  */
+.foxbank-help {
+  font-family: "Lobster", cursive;
+  font-size: 3em;
+}
+
+.foxbank-title {
+  font-family: "Lobster", cursive;
+  font-size: 1.2em;
 }

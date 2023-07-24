@@ -10,6 +10,8 @@ import Deposit from "./Deposit.js";
 import Withdraw from "./Withdraw.js";
 import Balance from "./Balance.js";
 import AllData from "./AllData.js";
+import NotFound from "./NotFound";
+import Help from "./Help.js";
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -35,6 +37,8 @@ const App = () => {
             element={<Balance setLoggedInUser={setLoggedInUser} />}
           />
           <Route path="/AllData" element={<AllData />} />
+          <Route path="/Help" element={<Help />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserProvider>
     </HashRouter>
