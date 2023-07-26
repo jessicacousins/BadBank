@@ -30,7 +30,10 @@ const App = () => {
             path="/Login"
             element={<Login loggedInUser={loggedInUser} />}
           />
-          <Route path="/Deposit" element={<Deposit />} />
+          <Route
+            path="/Deposit"
+            element={<Deposit setLoggedInUser={setLoggedInUser} />}
+          />
           <Route path="/Withdraw" element={<Withdraw />} />
           <Route
             path="/Balance"

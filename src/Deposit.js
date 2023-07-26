@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import foxLogo from "./foxlogo.png";
 import Tooltip from "./Layouts/Tooltip";
 import checkmark from "./checkmark.png";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const Deposit = () => {
   const [show, setShow] = React.useState(true);
@@ -17,14 +18,19 @@ const Deposit = () => {
   const numberInputRef = useRef(null);
   const [balanceChange, setBalanceChange] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
+  const [formData, setFormData] = useState({
+    amount: "",
+  });
 
   function validate(amount) {
-    if (isNaN(amount) || amount <= 0) {
-      setStatus("Error: Invalid amount");
-      setTimeout(() => setStatus(""), 3000);
+    if (!isNaN(amount)) {
+      if (amount <= 0) {
+        return false;
+      }
+      return true;
+    } else {
       return false;
     }
-    return true;
   }
 
   useEffect(() => {
@@ -75,9 +81,13 @@ const Deposit = () => {
     if (!validate(amount)) return;
     const depositAmount = parseFloat(amount);
     currentUser.balance += depositAmount;
-    setShow(false);
-  }
+    setUpdatedBalance(currentUser.balance);
 
+    clearForm();
+    setShow(false);
+
+    new Audio(bing).play();
+  }
   function clearForm() {
     setAmount("");
     setShow(true);
@@ -118,15 +128,18 @@ const Deposit = () => {
     borderRadius: "20px",
   };
 
-  const handleButtonClick = () => {
-    const audio = new Audio(bing);
-    audio.play();
-    if (numberInputRef.current) {
-      numberInputRef.current.value = "";
+  function handleCreate(values, formikProps) {
+    if (!values.amount || values.amount.trim() === "") {
+      alert("Value is required.");
+      return;
     }
-  };
-
-  const isValid = !isNaN(amount) && parseFloat(amount) > 0;
+    if (!/^\d+(\.\d{1,2})?$/.test(values.amount)) {
+      alert("Invalid amount. Please enter a valid positive number.");
+      return;
+    }
+    setAmount(values.amount);
+    handleDeposit();
+  }
 
   return (
     <Card
@@ -135,38 +148,50 @@ const Deposit = () => {
       status={status}
       body={
         show ? (
-          <>
-            <h5 className="account-holder">Account Holder: </h5>
-            <p className="account-holder-user">{currentUser.name}</p>
-            <h5 className="account-holder-balance">Account Balance: </h5>
-            <p className="account-holder-balance-number">
-              ${currentUser.balance}
-            </p>
-            <hr />
-            <input
-              style={{ width: "365px", height: "45px", fontSize: "1.4em" }}
-              type="number"
-              className="form-control enter-amount"
-              id="amount"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={(e) => setAmount(e.currentTarget.value)}
-              ref={numberInputRef}
-            />
-            <br />
-            <button
-              type="submit"
-              className="btn"
-              onClick={() => {
-                handleDeposit();
-                handleButtonClick();
-              }}
-              disabled={!isValid}
-              style={greenBtn}
-            >
-              Deposit
-            </button>
-          </>
+          <Formik initialValues={formData} onSubmit={handleCreate}>
+            {(formikProps) => (
+              <Form onSubmit={formikProps.handleSubmit}>
+                <h5 className="account-holder">Account Holder: </h5>
+                <p className="account-holder-user">{currentUser.name}</p>
+                <h5 className="account-holder-balance">Account Balance: </h5>
+                <p className="account-holder-balance-number">
+                  {/* ${updatedBalance} */}${updatedBalance.toFixed(2)}
+                </p>
+                <hr />
+                <Field
+                  style={{ width: "365px", height: "45px", fontSize: "1.4em" }}
+                  type="input"
+                  className={`form-control ${
+                    formikProps.touched.amount && formikProps.errors.amount
+                      ? "error-border"
+                      : ""
+                  }`}
+                  id="amount"
+                  name="amount"
+                  placeholder="Enter amount"
+                  value={formikProps.values.amount}
+                  onChange={formikProps.handleChange}
+                  ref={numberInputRef}
+                />
+
+                <ErrorMessage
+                  name="amount"
+                  component="div"
+                  style={{ color: "maroon", fontWeight: "bold" }}
+                />
+                <br />
+                <button
+                  title="DoubleClick to Deposit"
+                  type="submit"
+                  className="btn"
+                  disabled={!formikProps.isValid || !formikProps.dirty}
+                  style={greenBtn}
+                >
+                  Deposit
+                </button>
+              </Form>
+            )}
+          </Formik>
         ) : (
           <>
             <h5 className="success-title">Success</h5>
