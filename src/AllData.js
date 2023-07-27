@@ -17,7 +17,7 @@ const AllData = () => {
       backgroundColor: "rgb(245, 239, 227)",
     };
     return (
-      <Card customStyle={noData} header="Deposit">
+      <Card customStyle={noData} header="AllData">
         <h2 style={{ color: "rgb(1, 1, 77)" }}>No User Data Available</h2>
         <h4>Please Login</h4>
         <Tooltip text="Home">
